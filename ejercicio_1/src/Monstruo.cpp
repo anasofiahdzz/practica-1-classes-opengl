@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>  // para usar std::ofstream
+#include "Monstruo.h"
 
 /* 1. MODELADO DE MONSTRUOS*/
 /*Clase base*/
@@ -32,13 +34,11 @@ Monstruo::Monstruo(const std::string& nombre, int fuerza, int agilidad, int inte
     : nombre(nombre), fuerza(fuerza), agilidad(agilidad), inteligencia(inteligencia), especie(especie) {}
 
     /*metodo*/
-    void Monstruo::mostrarAtributos() const {
-        std::cout << "Nombre: " << nombre << "\n"; /*<< operador de inserccion*/
-        std::cout << "Fuerza: " << fuerza << "\n";
-        std::cout << "Agilidad: " << agilidad << "\n";
-        std::cout << "Inteligencia: " << inteligencia << "\n";
-        std::cout << "Especie: " << especie << "\n";
-    }
+    std::string Monstruo::getNombre() const { return nombre; }
+    int Monstruo::getFuerza() const { return fuerza; }
+    int Monstruo::getAgilidad() const { return agilidad; }
+    int Monstruo::getInteligencia() const { return inteligencia; }
+    char Monstruo::getEspecie() const { return especie; }
 
 /*Clases derivadas (especies)*/
 /*1. O Orco*/ 
