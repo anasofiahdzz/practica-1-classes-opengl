@@ -53,7 +53,11 @@ class Batalla {
                           << monstruo2.getNombre() << " (" << monstruo2.getEspecie() << ")\n";
 
         /*Usando random para las batallas*/
-        std::random_device random; //aleatorio
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0.0, 1.0);
+
+        
 
         /*para decidir el ganador*/
         int ganador1 = 0, ganador2 = 0;
@@ -63,12 +67,11 @@ class Batalla {
             /**/
             double probabilidad = double(puntos1) / double(puntos1+puntos2);
 
-            /*generando el random entre 0 y 1*/
-            double rd = random() / double(random.max());
-
             /*se usa << el op de inserccion*/
             std::cout << "\nEncuentro " << i << ": ";
             archivoResultados << "\nEncuentro " << i << ": ";
+
+            double rd = dis(gen);
 
             if (rd < probabilidad)
             {
@@ -89,10 +92,13 @@ class Batalla {
             ganadorFinal = monstruo1.getNombre();
             std::cout << "\nEl ganador es: " << monstruo1.getNombre() << "\n";
         }
-        else
+        else if(ganador2>ganador1)
         {
             ganadorFinal = monstruo2.getNombre();
             std::cout << "\nEl ganador es: " << monstruo2.getNombre() << "\n";
+        } else {
+            ganadorFinal = "Empate";
+            std::cout << "\nAmbos monstruos empataron\n";
         }
 
         std::cout << "El ganador de la batalla es: " << ganadorFinal << "\n";
