@@ -15,7 +15,7 @@ int Monstruo::getAgilidad() const { return agilidad; }
 int Monstruo::getInteligencia() const { return inteligencia; }
 char Monstruo::getEspecie() const {return especie;}
 
-// Método para mostrar atributos
+// atributos
 void Monstruo::mostrarAtributos() const {
     std::cout << "Nombre: " << nombre
               << ", Fuerza: " << fuerza

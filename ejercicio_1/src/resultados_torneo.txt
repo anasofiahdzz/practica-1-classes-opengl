@@ -1,0 +1,27 @@
+--- Ronda (20 participantes) ---
+H Monstruo13 vs T Monstruo16 -> Gana Monstruo13
+T Monstruo6 vs E Monstruo8 -> Gana Monstruo8
+T  vs T  -> Empate, desempate aleatorio: 
+D Monstruo5 vs T  -> Gana Monstruo5
+V Monstruo11 vs T  -> Gana Monstruo11
+O Monstruo2 vs E Monstruo9 -> Gana Monstruo2
+H Monstruo14 vs O Monstruo1 -> Gana Monstruo1
+D Monstruo4 vs V Monstruo12 -> Gana Monstruo4
+T Monstruo7 vs V Monstruo10 -> Gana Monstruo7
+O Monstruo3 vs D Monstruo15 -> Gana Monstruo3
+
+--- Ronda (10 participantes) ---
+T  vs D Monstruo4 -> Gana Monstruo4
+D Monstruo5 vs E Monstruo8 -> Gana Monstruo8
+O Monstruo1 vs T Monstruo7 -> Gana Monstruo1
+H Monstruo13 vs V Monstruo11 -> Gana Monstruo13
+O Monstruo2 vs O Monstruo3 -> Gana Monstruo2
+
+--- Ronda (5 participantes) ---
+H Monstruo13 vs D Monstruo4 -> Gana Monstruo4
+O Monstruo2 vs E Monstruo8 -> Gana Monstruo2
+
+--- Final ---
+D Monstruo4 vs O Monstruo2 -> Gana Monstruo4
+
+Campeón: Monstruo4

@@ -3,12 +3,11 @@
 #include <string>
 #include <fstream>  // para usar std::ofstream
 #include "Monstruo.h"
+#include "Batallas.h"
 
 
 /*2. MODELADO DE BATALLAS*/
-class Batalla {
-    public:
-    static void enfrenta(const Monstruo& monstruo1, const Monstruo& monstruo2, char tipoBatalla){
+    void Batalla::enfrenta(const Monstruo& monstruo1, const Monstruo& monstruo2, char tipoBatalla){
         int puntos1 = 0, puntos2 = 0;
         std::string nombreBatalla;
 
@@ -107,4 +106,3 @@ class Batalla {
         archivoBatallas.close();
         archivoResultados.close();
     }
-};
