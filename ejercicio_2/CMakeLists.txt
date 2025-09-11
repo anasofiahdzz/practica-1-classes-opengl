@@ -15,17 +15,18 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Encontrar bibliotecas
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
 
 # Ejecutable
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/src/Main.cpp)
+add_executable(${PROJECT_NAME} 
+    ${PROJECT_SOURCE_DIR}/src/Main.cpp
+    ${PROJECT_SOURCE_DIR}/src/gl.c
+)
 
 # Librerías
 # Linkear las bibliotecas encontradas
 target_link_libraries(${PROJECT_NAME} 
     OpenGL::GL
-    GLEW::GLEW
     glfw
 )

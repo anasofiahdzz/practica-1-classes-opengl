@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include "gl.h"              // Galogen en lugar de GLEW
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -53,12 +53,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
 
-    // Initialize GLEW
-    if (glewInit() != GLEW_OK)
-    {
-        std::cerr << "Failed to initialize GLEW" << std::endl;
-        return -1;
-    }
+    //Galogen carga funciones automáticamente
 
     // Build and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
