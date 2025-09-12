@@ -1,6 +1,10 @@
-#include "gl.h"              // Galogen en lugar de GLEW
+#include "gl.h"    
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <cmath>
+#include <vector>
+
+#define PI 3.14159265359
 
 // Vertex Shader source code (GLSL 4.10)
 const char* vertexShaderSource = R"(
@@ -28,6 +32,49 @@ const char* fragmentShaderSource = R"(
         FragColor = vec4(vertexColor, 1.0);
     }
 )";
+
+/*funciones auxiliares vertexshader y fragmentshader*/
+const char* vertexShaderSource = R"(
+    #version 410 core
+    layout (location = 0) in vec3 aPos;
+    void main() {
+        gl_Position = vec4(aPos, 1.0);
+    }
+)";
+
+// Fragment Shader (en el mismo archivo)
+const char* fragmentShaderSource = R"(
+    #version 410 core
+    out vec4 FragColor;
+    uniform vec3 color;
+    void main() {
+        FragColor = vec4(color, 1.0);
+    }
+)";
+
+// Función para crear el programa de shaders
+GLuint createShaderProgram() {
+    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
+    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    GLint success;
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cerr << "Error linkeando programa: " << infoLog << std::endl;
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return shaderProgram;
+}
 
 int main()
 {
