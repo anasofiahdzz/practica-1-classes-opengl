@@ -1,4 +1,3 @@
-// Torneo.cpp
 #include "Torneo.h"
 #include "Batallas.h"
 #include <fstream>
@@ -7,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>  
+#include <vector>
 
 // ronda (helper)
 static std::string nombreRondaSegunTam(size_t n) {
@@ -35,75 +35,46 @@ static std::string leerUltimoGanadorDesdeResultados(const std::string& ruta = "r
     return lastWinner;
 }
 
-void torneo(std::vector<Monstruo>& participantes) {
-    // archivo resumen del torneo 
-    std::ofstream outTorneo("resultados_torneo.txt", std::ios::trunc);
-    if (!outTorneo) {
-        std::cerr << "No se puede crear resultados_torneo.txt\n";
-        return;
-    }
+void torneo(std::vector<Monstruo>& participantes){
+    std::vector<Monstruo> ronda = participantes;
+    std::vector<Monstruo> ganadores;
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distTipo(0,2); // 0->f,1->i,2->e
-    const char tipos[3] = {'f','i','e'};
-    std::uniform_int_distribution<int> coin(0,1); // para desempates si Batalla escribió "Empate"
+    std::uniform_int_distribution<> tipoBatallaDist(0, 2); 
 
-    // participantes 
-    std::vector<Monstruo> rondaActual = participantes;
+    while (ronda.size() > 1) {
+        std::cout << nombreRondaSegunTam(ronda.size()) << std::endl;
+        ganadores.clear();
 
-    while (rondaActual.size() > 1) {
-        size_t n = rondaActual.size();
-        outTorneo << nombreRondaSegunTam(n) << "\n";
+        std::shuffle(ronda.begin(), ronda.end(), gen);
 
-        // participantes random
-        std::shuffle(rondaActual.begin(), rondaActual.end(), gen);
+        for (size_t i = 0; i < ronda.size(); i += 2) {
+            Monstruo& m1 = ronda[i];
+            Monstruo& m2 = ronda[i + 1];
 
-        std::vector<Monstruo> siguiente;
-        siguiente.reserve(n / 2);
+/*se elige tipo*/
+        char tipoBatalla;
+        switch(tipoBatallaDist(gen)) {
+            case 0: tipoBatalla = 'f'; break;
+            case 1: tipoBatalla = 'i'; break;
+            case 2: tipoBatalla = 'e'; break;
+        }
 
-        for (size_t i = 0; i + 1 < n; i += 2) {
-            Monstruo& m1 = rondaActual[i];
-            Monstruo& m2 = rondaActual[i+1];
+        Monstruo ganador = Batalla::enfrenta(m1, m2, tipoBatalla);
 
-            char tipoBat = tipos[distTipo(gen)];
+            std::cout << m1.getEspecie() << " " << m1.getNombre()
+                 << " vs " << m2.getEspecie() << " " << m2.getNombre()
+                 << " → Gana " << ganador.getNombre() << std::endl;
 
-            // Ejecuta la batalla
-            Batalla::enfrenta(m1, m2, tipoBat);
+            ganadores.push_back(ganador);
+        }
 
-            // Lee el ganador que dejó Batalla
-            std::string ganadorNombre = leerUltimoGanadorDesdeResultados("resultados.txt");
-
-            // desempatar si hay empate
-            if (ganadorNombre.empty() || ganadorNombre == "Empate") {
-                ganadorNombre = (coin(gen) == 0) ? m1.getNombre() : m2.getNombre();
-                outTorneo << m1.getEspecie() << " " << m1.getNombre()
-                          << " vs " << m2.getEspecie() << " " << m2.getNombre()
-                          << " -> Empate, desempate aleatorio: " << ganadorNombre << "\n";
-            } else {
-                outTorneo << m1.getEspecie() << " " << m1.getNombre()
-                          << " vs " << m2.getEspecie() << " " << m2.getNombre()
-                          << " -> Gana " << ganadorNombre << "\n";
-            }
-
-            // agregar al vector siguiente al objeto ganador
-            if (ganadorNombre == m1.getNombre()) {
-                siguiente.push_back(m1);
-            } else {
-                siguiente.push_back(m2);
-            }
-        } 
-
-        outTorneo << "\n";
-        rondaActual = std::move(siguiente);
-    } 
-
-    if (!rondaActual.empty()) {
-        outTorneo << "Campeón: " << rondaActual.front().getNombre() << "\n";
-        std::cout << "Campeón: " << rondaActual.front().getNombre() << "\n";
-    } else {
-        outTorneo << "Error: no hay participantes al final del torneo\n";
+        ronda = ganadores;
     }
 
-    outTorneo.close();
+    if (!ronda.empty())
+    {
+        std::cout << "Campeón: " << ronda[0].getNombre() << std::endl;
+    }
 }

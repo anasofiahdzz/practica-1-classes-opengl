@@ -5,7 +5,7 @@
 
 class Batalla {
 public:
-    static void enfrenta(const Monstruo& m1, const Monstruo& m2, char tipo);
+    static Monstruo enfrenta(const Monstruo& m1, const Monstruo& m2, char tipoBatalla);
 };
 
 #endif

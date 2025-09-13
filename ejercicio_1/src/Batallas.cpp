@@ -6,103 +6,112 @@
 #include "Batallas.h"
 
 
+
 /*2. MODELADO DE BATALLAS*/
-    void Batalla::enfrenta(const Monstruo& monstruo1, const Monstruo& monstruo2, char tipoBatalla){
-        int puntos1 = 0, puntos2 = 0;
-        std::string nombreBatalla;
+Monstruo Batalla::enfrenta(const Monstruo& monstruo1, const Monstruo& monstruo2, char tipoBatalla){
+    int puntos1 = 0, puntos2 = 0;
+    std::string nombreBatalla;
 
-        if (tipoBatalla == 'f') /*fisica*/ {
-            puntos1 = monstruo1.getFuerza() + monstruo1.getAgilidad();
-            puntos2 = monstruo2.getFuerza() + monstruo2.getAgilidad();
-            //std::cout << "Batalla Fisica \n";
-            nombreBatalla = "Batalla Fisica";
-        }
-        else if (tipoBatalla == 'i') /*ingenio*/ {
-            puntos1 = monstruo1.getAgilidad() + monstruo1.getInteligencia();
-            puntos2 = monstruo2.getAgilidad() + monstruo2.getInteligencia();
-            //std::cout << "Batalla de Ingenio \n";
-            nombreBatalla = "Batalla de Ingenio";
-        }
-        else if (tipoBatalla == 'e') /*espiritual*/
-        {
-            puntos1 = monstruo1.getFuerza() + monstruo1.getInteligencia();
-            puntos2 = monstruo2.getFuerza() + monstruo2.getInteligencia();
-            //std::cout << "Batalla Espiritual \n";
-            nombreBatalla = "Batalla Espiritual";
-        }
+    if (tipoBatalla == 'f') /*fisica*/ {
+        puntos1 = monstruo1.getFuerza() + monstruo1.getAgilidad();
+        puntos2 = monstruo2.getFuerza() + monstruo2.getAgilidad();
+        //std::cout << "Batalla Fisica \n";
+        nombreBatalla = "Batalla Fisica";
+    }
+    else if (tipoBatalla == 'i') /*ingenio*/ {
+        puntos1 = monstruo1.getAgilidad() + monstruo1.getInteligencia();
+        puntos2 = monstruo2.getAgilidad() + monstruo2.getInteligencia();
+        //std::cout << "Batalla de Ingenio \n";
+        nombreBatalla = "Batalla de Ingenio";
+    }
+    else if (tipoBatalla == 'e') /*espiritual*/
+    {
+        puntos1 = monstruo1.getFuerza() + monstruo1.getInteligencia();
+        puntos2 = monstruo2.getFuerza() + monstruo2.getInteligencia();
+        //std::cout << "Batalla Espiritual \n";
+        nombreBatalla = "Batalla Espiritual";
+    }
 
-        /*generar los archivos .txt*/
-        std::ofstream archivoBatallas("batallas.txt", std::ios::app); /*app abre el archivo en modo append escribe al final*/
-        std::ofstream archivoResultados("resultados.txt", std::ios::app);
+    /*generar los archivos .txt*/
+    std::ofstream archivoBatallas("batallas.txt", std::ios::app); /*app abre el archivo en modo append escribe al final*/
+    std::ofstream archivoResultados("resultados.txt", std::ios::app);
 
-        /*guardar los datos en Batallas.txt*/
-        archivoBatallas << monstruo1.getEspecie() << " " << monstruo1.getNombre() << " "
-                        << monstruo1.getFuerza() << " " << monstruo1.getAgilidad() << " " << monstruo1.getInteligencia() << " "
-                        << monstruo2.getEspecie() << " " << monstruo2.getNombre() << " "
-                        << monstruo2.getFuerza() << " " << monstruo2.getAgilidad() << " " << monstruo2.getInteligencia() << " "
-                        << tipoBatalla << "\n";
+    /*guardar los datos en Batallas.txt*/
+    archivoBatallas << monstruo1.getEspecie() << " " << monstruo1.getNombre() << " "
+                    << monstruo1.getFuerza() << " " << monstruo1.getAgilidad() << " " << monstruo1.getInteligencia() << " "
+                    << monstruo2.getEspecie() << " " << monstruo2.getNombre() << " "
+                    << monstruo2.getFuerza() << " " << monstruo2.getAgilidad() << " " << monstruo2.getInteligencia() << " "
+                    << tipoBatalla << "\n";
 
-        /*mostrar en resultados.txt*/
-        std::cout << "\n" << nombreBatalla << "\n";
-        archivoResultados << "\n" << nombreBatalla << "\n";
+    /*mostrar en resultados.txt*/
+    std::cout << "\n" << nombreBatalla << "\n";
+    archivoResultados << "\n" << nombreBatalla << "\n";
 
-        std::cout << monstruo1.getNombre() << " (" << monstruo1.getEspecie() << ") vs "
-                  << monstruo2.getNombre() << " (" << monstruo2.getEspecie() << ")\n";
-        archivoResultados << monstruo1.getNombre() << " (" << monstruo1.getEspecie() << ") vs "
-                          << monstruo2.getNombre() << " (" << monstruo2.getEspecie() << ")\n";
+    std::cout << monstruo1.getNombre() << " (" << monstruo1.getEspecie() << ") vs "
+                << monstruo2.getNombre() << " (" << monstruo2.getEspecie() << ")\n";
+    archivoResultados << monstruo1.getNombre() << " (" << monstruo1.getEspecie() << ") vs "
+                << monstruo2.getNombre() << " (" << monstruo2.getEspecie() << ")\n";
 
-        /*Usando random para las batallas*/
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
+    /*Usando random para las batallas*/
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0.0, 1.0);
 
-        
+    /*para decidir el ganador*/
+    int ganador1 = 0, ganador2 = 0;
 
-        /*para decidir el ganador*/
-        int ganador1 = 0, ganador2 = 0;
-
-        for (int i = 1; i <= 3; i++) /*3 encuentros*/
-        {
+    for (int i = 1; i <= 3; i++) /*3 encuentros*/
+    {
             /**/
-            double probabilidad = double(puntos1) / double(puntos1+puntos2);
+        double probabilidad = double(puntos1) / double(puntos1+puntos2);
 
-            /*se usa << el op de inserccion*/
-            std::cout << "\nEncuentro " << i << ": ";
-            archivoResultados << "\nEncuentro " << i << ": ";
+        /*se usa << el op de inserccion*/
+        std::cout << "\nEncuentro " << i << ": ";
+        archivoResultados << "\nEncuentro " << i << ": ";
 
-            double rd = dis(gen);
+        double rd = dis(gen);
 
-            if (rd < probabilidad)
-            {
-                std::cout << monstruo1.getNombre() << " Es el ganador\n";
-                archivoResultados << monstruo1.getNombre() << " Es el ganador\n";
-                ganador1++;
-            }
-            else {
-                std::cout << monstruo2.getNombre() << " Es el ganador\n";
-                archivoResultados << monstruo2.getNombre() << " Es el ganador\n";
-                ganador2++;
-            }
-        }
-        
-        /*para el ganador final*/
-        std::string ganadorFinal;
-        if (ganador1 > ganador2) {
-            ganadorFinal = monstruo1.getNombre();
-            std::cout << "\nEl ganador es: " << monstruo1.getNombre() << "\n";
-        }
-        else if(ganador2>ganador1)
+        if (rd < probabilidad)
         {
-            ganadorFinal = monstruo2.getNombre();
-            std::cout << "\nEl ganador es: " << monstruo2.getNombre() << "\n";
-        } else {
-            ganadorFinal = "Empate";
-            std::cout << "\nAmbos monstruos empataron\n";
+            std::cout << monstruo1.getNombre() << " Es el ganador\n";
+            archivoResultados << monstruo1.getNombre() << " Es el ganador\n";
+            ganador1++;
         }
-
-        std::cout << "El ganador de la batalla es: " << ganadorFinal << "\n";
-        archivoResultados << "El ganador de la batalla es: " << ganadorFinal << "\n";
-
+        else {
+            std::cout << monstruo2.getNombre() << " Es el ganador\n";
+            archivoResultados << monstruo2.getNombre() << " Es el ganador\n";
+            ganador2++;
+        }
+    }
+        
+    /*para el ganador final*/
+    //std::string ganadorFinal;
+    if (ganador1 > ganador2) {
+        //ganadorFinal = monstruo1.getNombre();
+        std::cout << "\nEl ganador es: " << monstruo1.getNombre() << "\n";
+        archivoResultados << "El ganador de la batalla es: " << monstruo1.getNombre() << "\n";
         archivoBatallas.close();
         archivoResultados.close();
+        return monstruo1;
     }
+    else if(ganador2>ganador1)
+    {
+        //ganadorFinal = monstruo2.getNombre();
+        std::cout << "\nEl ganador es: " << monstruo2.getNombre() << "\n";
+        archivoResultados << "El ganador de la batalla es: " << monstruo2.getNombre() << "\n";
+        archivoBatallas.close();
+        archivoResultados.close();
+        return monstruo2;
+    } else {
+        //ganadorFinal = "Empate";
+        //std::cout << "\nAmbos monstruos empataron\n";
+        /*empate se elige aleatorio*/
+        Monstruo ganador = (dis(gen) < 0.5) ? monstruo1 : monstruo2;
+        std::cout << "\nEmpate : Se elige al azar: " << ganador.getNombre() << "\n";
+        archivoResultados << "Empate : Se elige al azar: " << ganador.getNombre() << "\n";
+        archivoBatallas.close();
+        archivoResultados.close();
+        return ganador;
+    }
+}
+    
