@@ -1,6 +1,7 @@
 #include "gl.h"              
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Figuras.h"
 
 // Vertex Shader source code (GLSL 4.10)
 const char* vertexShaderSource = R"(
@@ -100,6 +101,11 @@ int main()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    /*elegir figura*/
+    Triangulo figura;  // se cambia aquí la figura, entre triangulo, cuadrado, rombo y trapecio
+    figura.init();
+
+    /*Todo esto es lo que ahora esta en Figuras.cpp*/
     // Set up vertex data and buffers and configure vertex attributes
     /*2 triangulos 4 vertices original comentado*/
     /*    float vertices[] = {
@@ -131,7 +137,8 @@ int main()
     };*/
 
     /*trapecio, se debe descomentar la linea de glDrawArrays en el render loop para que pueda ejecutarse*/
-    float vertices[] = {
+
+    /*    float vertices[] = {
         // vertice arriba izquierda
         -0.3f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  
         // vertice abajo izquierda
@@ -141,6 +148,7 @@ int main()
         // vertice abajo derecha
         0.6f, -0.5f, 0.0f,   1.0f, 1.0f, 0.0f   
     };
+*/
 
 /* original muchos triangulos
    float vertices[] = {
@@ -164,41 +172,7 @@ int main()
     };
 
     /*original*/
-    GLuint VBO, VAO;
-    
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
 
-    // Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    /*para vertices*/
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    /*(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(sizeof(float)*3));
-    glEnableVertexAttribArray(1);*/
-
-    // Unbind the VAO
-    glBindVertexArray(0);
-
-    GLuint VBOcolor;
-    
-    glGenBuffers(1, &VBOcolor);
-
-    // Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBOcolor);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
-
-    // Unbind the VAO
-    glBindVertexArray(0);
 
     // Render loop
     while (!glfwWindowShouldClose(window))
@@ -214,7 +188,8 @@ int main()
         // Draw the triangle
         glUseProgram(shaderProgram);
         /*original*/
-        glBindVertexArray(VAO);
+        //glBindVertexArray(VAO);
+        figura.draw();
         
         //triangulo y cuadrado
         /*glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);*/
@@ -228,9 +203,9 @@ int main()
     }
 
     // Deallocate resources
-    glDeleteVertexArrays(1, &VAO);
+/*  glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram(shaderProgram);*/
 
     // Terminate GLFW
     glfwTerminate();
